@@ -60,7 +60,11 @@ const DetailTask = () => {
     // Update photoURL & DisplayName pada user
     await getDownloadURL(refStorage)
       .then(async (url) => {
-        console.log(url);
+        const docRef = doc(db, "tasks", id);
+
+        await updateDoc(docRef, {
+          lampiran: url,
+        });
       })
       .catch((err) => console.log(err));
   };
@@ -182,9 +186,26 @@ const DetailTask = () => {
         {isMyTask && (
           <div className="border-[1px] rounded-md p-3 mt-3">
             <h1 className="text-xl font-medium mb-3">Lampiran</h1>
-            <div>
+            {task?.lampiran ? (
+              <>
+                {" "}
+                <img
+                  className="w-full h-50 object-cover"
+                  src={task?.lampiran}
+                  alt="Lamp"
+                />
+                <div className="relative bg-green-500 text-white rounded-xl py-1 px-3 cursor-pointer my-3 w-fit">
+                  <p>Ubah</p>
+                  <input
+                    className="absolute opacity-0 top-0 left-0 right-0 bottom-0"
+                    onChange={handleLampiran}
+                    type="file"
+                  />
+                </div>
+              </>
+            ) : (
               <input onChange={handleLampiran} type="file" />
-            </div>
+            )}
           </div>
         )}
       </div>

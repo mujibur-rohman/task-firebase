@@ -51,6 +51,7 @@ const AddTask = () => {
       users: values.users,
       completed: false,
       timestamp: serverTimestamp(),
+      lampiran: "",
       comments: [],
     }).then(() => {
       toast.success("Data Sukses Ditambahkan", {
