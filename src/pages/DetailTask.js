@@ -82,6 +82,30 @@ const DetailTask = () => {
     }
   };
 
+  const renderPriority = (priority) => {
+    if (priority === "Low") {
+      return (
+        <span className="px-3 py-1 rounded-full font-medium bg-orange-500 text-white">
+          Low
+        </span>
+      );
+    } else if (priority === "Medium") {
+      return (
+        <span className="px-3 py-1 rounded-full font-medium bg-blue-500 text-white">
+          Medium
+        </span>
+      );
+    } else if (priority === "High") {
+      return (
+        <span className="px-3 py-1 rounded-full font-medium bg-red-500 text-white">
+          High
+        </span>
+      );
+    } else {
+      return null;
+    }
+  };
+
   return (
     <div className="flex">
       <div className="basis-8/12">
@@ -97,10 +121,7 @@ const DetailTask = () => {
             )}
           </div>
           <div className="my-3 text-gray-600">
-            Priority :{" "}
-            <span className="px-3 py-1 rounded-full font-medium bg-orange-500 text-white">
-              Low
-            </span>
+            Priority : {renderPriority(task?.priority)}
           </div>
           <p className="text-justify text-gray-700 mb-5">{task?.description}</p>
           {isMyTask && (

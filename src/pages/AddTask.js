@@ -10,6 +10,11 @@ import { toast, ToastContainer } from "react-toastify";
 const AddTask = () => {
   const { users } = useGetUsers();
   const [optionUser, setOptionUser] = useState([]);
+  const [optionPriority, setOptionPriority] = useState([
+    { value: "Low", label: "Low" },
+    { value: "Medium", label: "Medium" },
+    { value: "High", label: "High" },
+  ]);
 
   useEffect(() => {
     if (users) {
@@ -32,6 +37,7 @@ const AddTask = () => {
     description: "",
     duedate: "",
     categories: "",
+    priority: "",
     users: [],
   };
   const validationSchema = yup.object({
@@ -39,6 +45,7 @@ const AddTask = () => {
     description: yup.string().required(),
     duedate: yup.string().required(),
     categories: yup.string().required(),
+    priority: yup.string().required(),
     users: yup.array().required().min(1),
   });
 
@@ -52,6 +59,7 @@ const AddTask = () => {
       completed: false,
       timestamp: serverTimestamp(),
       lampiran: "",
+      priority: values.priority,
       comments: [],
     }).then(() => {
       toast.success("Data Sukses Ditambahkan", {
@@ -160,6 +168,19 @@ const AddTask = () => {
                   }}
                 />
                 <ErrorMessage name="categories">
+                  {(err) => <span className="error-message">{err}</span>}
+                </ErrorMessage>
+              </div>
+              <div className="mb-3 flex flex-col">
+                <label className="mb-2 font-medium">Priority</label>
+                <Select
+                  name="priority"
+                  options={optionPriority}
+                  onChange={(e) => {
+                    props.setFieldValue("priority", e.value);
+                  }}
+                />
+                <ErrorMessage name="priority">
                   {(err) => <span className="error-message">{err}</span>}
                 </ErrorMessage>
               </div>
