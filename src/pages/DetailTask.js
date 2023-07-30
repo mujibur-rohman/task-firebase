@@ -209,19 +209,38 @@ const DetailTask = () => {
             <h1 className="text-xl font-medium mb-3">Lampiran</h1>
             {task?.lampiran ? (
               <>
-                {" "}
                 <img
                   className="w-full h-50 object-cover"
                   src={task?.lampiran}
                   alt="Lamp"
                 />
-                <div className="relative bg-green-500 text-white rounded-xl py-1 px-3 cursor-pointer my-3 w-fit">
-                  <p>Ubah</p>
-                  <input
-                    className="absolute opacity-0 top-0 left-0 right-0 bottom-0"
-                    onChange={handleLampiran}
-                    type="file"
-                  />
+                <div className="flex gap-3">
+                  <a
+                    className="bg-blue-500 text-white block rounded-xl mt-3 py-1 px-3 cursor-pointer my-3 w-fit"
+                    href={task?.lampiran}
+                  >
+                    Lihat Gambar
+                  </a>
+                  <div className="relative bg-green-500 text-white rounded-xl py-1 px-3 cursor-pointer my-3 w-fit">
+                    <p>Ubah</p>
+                    <input
+                      className="absolute opacity-0 top-0 left-0 right-0 bottom-0"
+                      onChange={handleLampiran}
+                      type="file"
+                    />
+                  </div>
+                  <div
+                    onClick={async () => {
+                      const docRef = doc(db, "tasks", id);
+
+                      await updateDoc(docRef, {
+                        lampiran: "",
+                      });
+                    }}
+                    className="relative bg-red-500 text-white rounded-xl py-1 px-3 cursor-pointer my-3 w-fit"
+                  >
+                    Hapus
+                  </div>
                 </div>
               </>
             ) : (
