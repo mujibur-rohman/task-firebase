@@ -1,6 +1,11 @@
 import React from 'react';
+import useGetTasks from '../hooks/useGetTasks';
+import useGetUsers from '../hooks/useGetUsers';
 
 const Users = () => {
+  const { tasks } = useGetTasks();
+  const { users } = useGetUsers();
+
   return (
     <div className="overflow-x-auto relative">
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -21,23 +26,33 @@ const Users = () => {
           </tr>
         </thead>
         <tbody>
-          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-            <th
-              scope="row"
-              className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-            >
-              Agustian
-            </th>
-            <td className="py-4 px-6">agustian@gmail.com</td>
-            <td className="py-4 px-6">36</td>
-            <td className="py-4 px-6">
-              <img
-                src="https://static.vecteezy.com/system/resources/thumbnails/002/275/847/small/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg"
-                alt="avatar-user"
-                className="avatar"
-              />
-            </td>
-          </tr>
+          {users.map((user) => {
+            const myTasks = tasks.filter((task) =>
+              task.users.find((u) => u.id === user.id)
+            );
+            return (
+              <tr
+                key={user.id}
+                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+              >
+                <th
+                  scope="row"
+                  className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                >
+                  {user.displayName}
+                </th>
+                <td className="py-4 px-6">{user.email}</td>
+                <td className="py-4 px-6">{myTasks.length}</td>
+                <td className="py-4 px-6">
+                  <img
+                    src={user.photoURL}
+                    alt="avatar-user"
+                    className="avatar"
+                  />
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>

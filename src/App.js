@@ -1,10 +1,11 @@
+import { useSelector } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import Header from './component/Header';
 import Sidebar from './component/Sidebar';
 import SetupRouter from './routes';
 
 function App() {
-  const auth = false;
+  const auth = useSelector((state) => state.user);
   return (
     <BrowserRouter>
       <main className="flex w-full h-screen">
