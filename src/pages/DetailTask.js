@@ -9,9 +9,10 @@ import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { db } from "../firebase/config";
+import { db, storage } from "../firebase/config";
 import useCompare from "../hooks/useCompare";
 import useGetTaskById from "../hooks/useGetTaskById";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 const DetailTask = () => {
   const auth = useSelector((state) => state.user);
@@ -45,6 +46,23 @@ const DetailTask = () => {
 
   const handleComment = (e) => {
     setComment({ ...comment, body: e.target.value });
+  };
+
+  const handleLampiran = async (e) => {
+    console.log(e.target.files[0]);
+    const photo = e.target.files[0];
+    // Lokasi File
+    const uploadPath = `images/lampiran/${photo.name}`;
+
+    const refStorage = ref(storage, uploadPath);
+    await uploadBytes(refStorage, photo);
+
+    // Update photoURL & DisplayName pada user
+    await getDownloadURL(refStorage)
+      .then(async (url) => {
+        console.log(url);
+      })
+      .catch((err) => console.log(err));
   };
 
   const submitComment = async (e) => {
@@ -161,12 +179,14 @@ const DetailTask = () => {
             ))}
           </div>
         </div>
-        <div className="border-[1px] rounded-md p-3 mt-3">
-          <h1 className="text-xl font-medium mb-3">Lampiran</h1>
-          <div>
-            <input type="file" />
+        {isMyTask && (
+          <div className="border-[1px] rounded-md p-3 mt-3">
+            <h1 className="text-xl font-medium mb-3">Lampiran</h1>
+            <div>
+              <input onChange={handleLampiran} type="file" />
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
