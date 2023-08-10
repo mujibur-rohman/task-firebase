@@ -10,11 +10,11 @@ import { toast, ToastContainer } from "react-toastify";
 const AddTask = () => {
   const { users } = useGetUsers();
   const [optionUser, setOptionUser] = useState([]);
-  const [optionPriority, setOptionPriority] = useState([
+  const optionPriority = [
     { value: "Low", label: "Low" },
     { value: "Medium", label: "Medium" },
     { value: "High", label: "High" },
-  ]);
+  ];
 
   useEffect(() => {
     if (users) {
